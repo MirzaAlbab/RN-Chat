@@ -1,0 +1,42 @@
+name: CD to Process
+
+on:
+  workflow_dispatch: # allow jobs manual run
+  release:
+    types: [published]
+
+jobs:
+  send-to-telegram:
+    name: send file to telegram
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2/Week-10/learnfirebase
+
+      - name: instalasi modules
+        run: yarn
+
+      - name: make gradle executable
+        run: chmod +x ./android/gradlew
+
+      - name: generate apk
+        run: |
+          cd android
+          ./gradlew assembleRelease 
+          cd ..
+
+      - name: send to telegram
+        run: |
+          cd android/app/build/outputs/apk/release/
+          curl -X POST -H 'Content-Type: multipart/form-data' -F chat_id=${{secrets.TG_CHAT_ID}} -F text='App is Released!' https://api.telegram.org/bot${{secrets.TG_BOT_TOKEN}}/sendMessage
+          curl -X POST -H 'Content-Type: multipart/form-data' -F chat_id=${{secrets.TG_CHAT_ID}} -F document=@app-release.apk https://api.telegram.org/bot${{secrets.TG_BOT_TOKEN}}/sendDocument
+
+      # - name: Upload App to Google Play
+      #   uses: r0adkll/upload-google-play@v1
+      #   with:
+      #     serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_JSON }}
+      #     packageName: com.bookapp.iqbal
+      #     releaseFiles: android/app/build/outputs/bundle/release/*.aab
+      #     track: alpha
+      #     status: completed
+      #     inAppUpdatePriority: 2
