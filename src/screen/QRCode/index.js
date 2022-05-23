@@ -18,6 +18,7 @@ import {
 
 // import CameraKitCameraScreen
 import {CameraScreen} from 'react-native-camera-kit';
+import {useSelector} from 'react-redux';
 
 const QRCode = () => {
   const [qrvalue, setQrvalue] = useState('');
@@ -73,6 +74,7 @@ const QRCode = () => {
             style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Open QR Scanner</Text>
           </TouchableOpacity>
+
           {qrvalue ? (
             <Text style={{marginTop: 16, color: 'white', marginBottom: -16}}>
               Scanned Result:{' '}

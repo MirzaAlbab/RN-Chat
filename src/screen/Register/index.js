@@ -15,6 +15,7 @@ import SimpleToast from 'react-native-simple-toast';
 const Register = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
   //Handles email input
   const handleEmailChange = text => {
@@ -27,8 +28,8 @@ const Register = ({navigation}) => {
   };
 
   //Handles confirm password input
-  const handleConfirmPasswordChange = text => {
-    setConfirmPassword(text);
+  const handleUsernameChange = text => {
+    setUsername(text);
   };
 
   //Handles sign up
@@ -39,7 +40,7 @@ const Register = ({navigation}) => {
     }
     let data = {
       id: uuid.v4(),
-      username: 'ini username',
+      username: username,
       email: email,
       password: password,
       img: 'https://bootdey.com/img/Content/avatar/avatar1.png',
@@ -84,6 +85,17 @@ const Register = ({navigation}) => {
           placeholder="Email Address"
           placeholderTextColor="grey"
           keyboardType="email-address"
+          returnKeyType="next"
+        />
+
+        <TextInput
+          style={styles.email}
+          defaultValue={username}
+          onChangeText={handleUsernameChange}
+          textContentType="username"
+          placeholder="Username"
+          placeholderTextColor="grey"
+          keyboardType="default"
           returnKeyType="next"
         />
         <View style={styles.passwordContainer}>

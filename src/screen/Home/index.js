@@ -77,7 +77,7 @@ export default function Home({navigation}) {
   useEffect(() => {
     if (User) {
       setImage(
-        User.user.photo ?? 'https://bootdey.com/img/Content/avatar/avatar1.png',
+        User.img ?? 'https://bootdey.com/img/Content/avatar/avatar1.png',
       );
     }
   });
@@ -97,9 +97,7 @@ export default function Home({navigation}) {
               }}
             />
             {User ? (
-              <Text style={styles.name}>
-                {User.user.givenName ?? User.user.email}
-              </Text>
+              <Text style={styles.name}>{User.username ?? User.email}</Text>
             ) : null}
           </View>
         </View>
