@@ -5,11 +5,12 @@ import {COLORS} from '../helper/color';
 import {FONTS} from '../helper/font';
 import {Avatar} from '@rneui/themed';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {navigate} from '../helper/navigate';
 // create a component
-const ChatHeader = (props, {navigation}) => {
+const ChatHeader = props => {
   const {data} = props;
-  // console.log("cht saa",data);
+  // console.log('ini data header', data);
+  // console.log('ini data header', data);
 
   const [lastSeen, setlastSeen] = useState('');
 
@@ -21,13 +22,13 @@ const ChatHeader = (props, {navigation}) => {
         translucent={false}
       />
       <Ionicons
-        style={{marginRight: 8}}
+        style={{marginLeft: 5, marginRight: 5}}
         name="arrow-back"
         size={24}
-        color={COLORS.theme}
-        onPress={() => navigation.goBack()}
+        color={COLORS.white}
+        onPress={() => navigate('Dashboard')}
       />
-      <Avatar source={{uri: data.avatar_url}} rounded size="small" />
+      <Avatar source={{uri: data.img}} rounded size="small" />
 
       <View style={{flex: 1, marginLeft: 10}}>
         <Text
@@ -38,7 +39,7 @@ const ChatHeader = (props, {navigation}) => {
             fontFamily: FONTS.SemiBold,
             textTransform: 'capitalize',
           }}>
-          {data.name}
+          {data.username ?? data.name}
         </Text>
 
         {/* <Text
@@ -50,18 +51,32 @@ const ChatHeader = (props, {navigation}) => {
           {lastSeen}
         </Text> */}
       </View>
-
-      {/* <Icon
-                style={{
-                    marginHorizontal: 10,
-                    color: COLORS.themeColor
-                }}
-                name="videocam-outline"
-                type="Ionicons"
-            /> */}
+      <Ionicons
+        style={{marginRight: 10}}
+        name="videocam"
+        size={24}
+        color={COLORS.white}
+        onPress={() => ''}
+      />
+      <Ionicons
+        style={{marginRight: 10}}
+        name="md-call-sharp"
+        size={22}
+        color={COLORS.white}
+        onPress={() => ''}
+      />
+      <Ionicons
+        style={{marginRight: 15}}
+        name="information-circle-outline"
+        size={24}
+        color={COLORS.white}
+        onPress={() => ''}
+      />
     </View>
   );
 };
+
+export default ChatHeader;
 
 // define your styles
 const styles = StyleSheet.create({

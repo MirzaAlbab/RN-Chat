@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,62 +10,21 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
+import moment from 'moment';
 import MsgComponent from '../../components/MsgComponent';
+import SimpleToast from 'react-native-simple-toast';
 import {COLORS} from '../../helper/color';
 import ChatHeader from '../../components/ChatHeader';
+import Ionicon from 'react-native-vector-icons/Ionicons';
+import {useSelector} from 'react-redux';
+import database from '@react-native-firebase/database';
 
-const Data = [
-  {
-    massage: 'Yes Ofcourse..',
-    type: 'sender',
-  },
-  {
-    massage: 'How are You ?',
-    type: 'sender',
-  },
-  {
-    massage: 'How Your Opinion about the one done app ?',
-    type: 'sender',
-  },
-  {
-    massage:
-      'Well i am not satisfied with this design plzz make design better ',
-    type: 'receiver',
-  },
-  {
-    massage: 'could you plz change the design...',
-    type: 'receiver',
-  },
-  {
-    massage: 'How are You ?',
-    type: 'sender',
-  },
-  {
-    massage: 'How Your Opinion about the one done app ?',
-    type: 'sender',
-  },
-  {
-    massage:
-      'Well i am not satisfied with this design plzz make design better ',
-    type: 'receiver',
-  },
-  {
-    massage: 'could you plz change the design...',
-    type: 'receiver',
-  },
-  {
-    massage: 'How are You ?',
-    type: 'sender',
-  },
-  {
-    massage: 'How Your Opinion about the one done app ?',
-    type: 'sender',
-  },
-];
-
-export default function Chat({props}) {
-  console.log('props', props);
+export default function Chat(props) {
+  const {User} = useSelector(state => state.login);
+  // console.log('props', props);
   const {data} = props.route.params;
+  // console.log('data', data);
+  // console.log('data', data);
 
   // console.log("token",token)
 
@@ -73,6 +32,61 @@ export default function Chat({props}) {
   const [update, setupdate] = React.useState(false);
   const [disabled, setdisabled] = React.useState(false);
   const [allChat, setallChat] = React.useState([]);
+
+  useEffect(() => {
+    const onChildAdd = database()
+      .ref('/messages/' + data.roomId)
+      .on('child_added', snapshot => {
+        // console.log('A new node has been added', snapshot.val());
+        setallChat(state => [snapshot.val(), ...state]);
+      });
+    // Stop listening for updates when no longer required
+    return () =>
+      database()
+        .ref('/messages' + data.roomId)
+        .off('child_added', onChildAdd);
+  }, [data.roomId]);
+
+  const msgvalid = txt => txt && txt.replace(/\s/g, '').length;
+
+  const sendMsg = () => {
+    if (msg == '' || msgvalid(msg) == 0) {
+      SimpleToast.show('Enter something....');
+      return false;
+    }
+    setdisabled(true);
+    let msgData = {
+      roomId: data.roomId,
+      message: msg,
+      from: User?.id,
+      to: data.id,
+      sendTime: moment().format(''),
+      msgType: 'text',
+    };
+
+    const newReference = database()
+      .ref('/messages/' + data.roomId)
+      .push();
+    msgData.id = newReference.key;
+    newReference.set(msgData).then(() => {
+      let chatListupdate = {
+        lastMsg: msg,
+        sendTime: msgData.sendTime,
+      };
+      database()
+        .ref('/chatlist/' + data?.id + '/' + User?.id)
+        .update(chatListupdate)
+        .then(() => console.log('Data updated.'));
+      console.log("'/chatlist/' + User?.id + '/' + data?.id", data);
+      database()
+        .ref('/chatlist/' + User?.id + '/' + data?.id)
+        .update(chatListupdate)
+        .then(() => console.log('Data updated.'));
+
+      setMsg('');
+      setdisabled(false);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -84,18 +98,12 @@ export default function Chat({props}) {
         style={{flex: 1}}>
         <FlatList
           style={{flex: 1}}
-          data={Data}
+          data={allChat}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index}
           inverted
           renderItem={({item}) => {
-            return (
-              <MsgComponent
-                sender={item.type == 'sender'}
-                massage={item.message}
-                item={item}
-              />
-            );
+            return <MsgComponent sender={item.from == User.id} item={item} />;
           }}
         />
       </ImageBackground>
@@ -127,18 +135,8 @@ export default function Chat({props}) {
           onChangeText={val => setMsg(val)}
         />
 
-        <TouchableOpacity
-          disabled={disabled}
-          //    onPress={sendMsg}
-        >
-          <Icon
-            style={{
-              // marginHorizontal: 15,
-              color: COLORS.white,
-            }}
-            name="paper-plane-sharp"
-            type="Ionicons"
-          />
+        <TouchableOpacity disabled={disabled} onPress={sendMsg}>
+          <Ionicon name="ios-send" size={30} color={COLORS.white} />
         </TouchableOpacity>
       </View>
     </View>

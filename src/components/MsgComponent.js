@@ -5,7 +5,7 @@ import {FONTS} from '../helper/font';
 import TimeDelivery from './TimeDelivery';
 
 const MsgComponent = props => {
-  const {sender, massage, item, sendTime} = props;
+  const {sender, item, sendTime} = props;
   return (
     <Pressable style={{marginVertical: 0}}>
       <View
@@ -27,7 +27,7 @@ const MsgComponent = props => {
             fontFamily: FONTS.Regular,
             fontSize: 12.5,
           }}>
-          {item.massage}
+          {item.message}
         </Text>
 
         <TimeDelivery sender={sender} item={item} />

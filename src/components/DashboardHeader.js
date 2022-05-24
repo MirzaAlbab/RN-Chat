@@ -30,7 +30,7 @@ export default function DashboardHeader() {
           color={COLORS.theme}
         />
 
-        <Avatar source={{uri: User.img}} rounded size="small" />
+        <Avatar source={{uri: User?.img}} rounded size="small" />
       </View>
     </View>
   );

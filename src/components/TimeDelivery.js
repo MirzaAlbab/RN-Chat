@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS} from '../helper/color';
+import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // create a component
@@ -13,35 +14,27 @@ const TimeDelivery = props => {
         styles.mainView,
         {
           justifyContent: 'flex-end',
+          flexDirection: 'row',
         },
       ]}>
       <Text
         style={{
           fontFamily: 'Poppins-Regular',
           fontSize: 7,
-          color: sender ? COLORS.white : COLORS.gray,
+          color: sender ? COLORS.white : COLORS.black,
         }}>
         {item.time}
-        {/* {moment(item.send_time).format('LLL')} */}
+        {moment(item.send_time).format('LLL')}
       </Text>
 
       <Ionicons
         style={{
           marginHorizontal: 10,
-          color: sender ? COLORS.theme : COLORS.gray,
+          color: sender ? COLORS.white : COLORS.black,
         }}
-        name="checkmart-done"
+        name="checkmark-done"
         size={12}
       />
-      {/* <Icon
-        name={'checkmark-done'}
-        type="Ionicons"
-        style={{
-          color: item.seen ? COLORS.black : COLORS.white,
-          fontSize: 15,
-          marginLeft: 5,
-        }} */}
-      {/* /> */}
     </View>
   );
 };

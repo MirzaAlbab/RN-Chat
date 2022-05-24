@@ -57,30 +57,32 @@ export default function Home({navigation}) {
         {
           text: 'OK',
           onPress: () => {
-            if (!User.idToken) {
-              auth()
-                .signOut()
-                .then(() => {
-                  navigation.navigate('Login');
-                  dispatch(setUser(null));
-                });
-            }
-            if (User.idToken) {
-              signOutGoogle();
-            }
+            dispatch(setUser(null));
+            navigation.navigate('Login');
+            // if (!User.idToken) {
+            //   auth()
+            //     .signOut()
+            //     .then(() => {
+            //       navigation.navigate('Login');
+            //       dispatch(setUser(null));
+            //     });
+            // }
+            // if (User.idToken) {
+            //   signOutGoogle();
+            // }
           },
         },
       ],
       {cancelable: false},
     );
   };
-  useEffect(() => {
-    if (User) {
-      setImage(
-        User.img ?? 'https://bootdey.com/img/Content/avatar/avatar1.png',
-      );
-    }
-  });
+  // useEffect(() => {
+  //   if (User) {
+  //     setImage(
+  //       User?.img ?? 'https://bootdey.com/img/Content/avatar/avatar1.png',
+  //     );
+  //   }
+  // });
   if (loading) {
     <View style={styles.container}>
       <ActivityIndicator size="large" color="#0000ff" />
@@ -97,7 +99,7 @@ export default function Home({navigation}) {
               }}
             />
             {User ? (
-              <Text style={styles.name}>{User.username ?? User.email}</Text>
+              <Text style={styles.name}>{User.email ?? User.email}</Text>
             ) : null}
           </View>
         </View>

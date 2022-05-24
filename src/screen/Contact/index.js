@@ -70,9 +70,9 @@ export default function Contact({navigation}) {
             .update(data)
             .then(() => console.log('Data updated.'));
 
-          navigation.navigate('Chat', {receiverData: data});
+          navigation.navigate('Chat', {data: data});
         } else {
-          navigation.navigate('Chat', {receiverData: snapshot.val()});
+          navigation.navigate('Chat', {data: snapshot.val()});
         }
       });
   };

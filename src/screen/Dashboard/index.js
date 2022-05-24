@@ -37,7 +37,7 @@ export default function Dashboard({navigation}) {
   const renderItem = ({item}) => (
     <ListItem
       containerStyle={{paddingVertical: 8, marginVertical: 0}}
-      onPress={() => navigation.navigate('Chat', {receiverData: item})}>
+      onPress={() => navigation.navigate('Chat', {data: item})}>
       <Avatar
         source={{uri: item.img}}
         rounded
@@ -46,7 +46,7 @@ export default function Dashboard({navigation}) {
       />
       <ListItem.Content>
         <ListItem.Title style={{fontFamily: FONTS.Medium, fontSize: 14}}>
-          {item.username}
+          {item.username ?? item.name}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{fontFamily: FONTS.Regular, fontSize: 12}}
