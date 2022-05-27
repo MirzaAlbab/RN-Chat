@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {COLORS} from '../helper/color';
 import {FONTS} from '../helper/font';

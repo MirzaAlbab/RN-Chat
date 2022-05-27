@@ -17,30 +17,33 @@ export const SignInAuth = (email, password) => async dispatch => {
   //     dispatch(setLoading(false));
   //     Alert.alert('Invalid credentials');
   //   });
-
-  database()
-    .ref('/users/')
-    .orderByChild('email')
-    .equalTo(email)
-    .once('value')
-    .then(snapshot => {
-      if (snapshot.val() == null) {
+  try {
+    database()
+      .ref('/users/')
+      .orderByChild('email')
+      .equalTo(email)
+      .once('value')
+      .then(snapshot => {
+        if (snapshot.val() == null) {
+          dispatch(setLoading(false));
+          SimpleToast.show('Invalid email');
+          return false;
+        }
+        const userData = Object.values(snapshot.val())[0];
+        if (userData.password !== password) {
+          dispatch(setLoading(false));
+          SimpleToast.show('Invalid password');
+          return false;
+        }
+        dispatch(setUser(userData));
+        // console.log('User data: ', snapshot.val());
         dispatch(setLoading(false));
-        SimpleToast.show('Invalid email');
-        return false;
-      }
-      const userData = Object.values(snapshot.val())[0];
-      if (userData.password !== password) {
-        dispatch(setLoading(false));
-        SimpleToast.show('Invalid password');
-        return false;
-      }
-      dispatch(setUser(userData));
-      console.log('User data: ', snapshot.val());
-      dispatch(setLoading(false));
-      SimpleToast.show('Login successfully');
-      navigate('Main');
-    });
+        SimpleToast.show('Login successfully');
+        navigate('Main');
+      });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const setUser = payload => {

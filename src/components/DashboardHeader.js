@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux';
 import {COLORS} from '../helper/color';
 import {FONTS} from '../helper/font';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import SimpleToast from 'react-native-simple-toast';
 
 export default function DashboardHeader() {
   const {User} = useSelector(state => state.login);
@@ -28,6 +29,7 @@ export default function DashboardHeader() {
           name="ios-notifications"
           size={24}
           color={COLORS.theme}
+          onPress={() => SimpleToast.show('Coming Soon')}
         />
 
         <Avatar source={{uri: User?.img}} rounded size="small" />

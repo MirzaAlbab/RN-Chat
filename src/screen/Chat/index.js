@@ -1,12 +1,9 @@
-//import liraries
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ImageBackground,
   TextInput,
-  SectionList,
   TouchableOpacity,
   FlatList,
 } from 'react-native';
@@ -21,26 +18,19 @@ import database from '@react-native-firebase/database';
 
 export default function Chat(props) {
   const {User} = useSelector(state => state.login);
-  // console.log('props', props);
   const {data} = props.route.params;
-  // console.log('data', data);
-  // console.log('data', data);
 
-  // console.log("token",token)
-
-  const [msg, setMsg] = React.useState('');
-  const [update, setupdate] = React.useState(false);
-  const [disabled, setdisabled] = React.useState(false);
-  const [allChat, setallChat] = React.useState([]);
+  const [msg, setMsg] = useState('');
+  const [disabled, setdisabled] = useState(false);
+  const [allChat, setallChat] = useState([]);
 
   useEffect(() => {
     const onChildAdd = database()
       .ref('/messages/' + data.roomId)
       .on('child_added', snapshot => {
-        // console.log('A new node has been added', snapshot.val());
         setallChat(state => [snapshot.val(), ...state]);
       });
-    // Stop listening for updates when no longer required
+
     return () =>
       database()
         .ref('/messages' + data.roomId)
@@ -77,7 +67,7 @@ export default function Chat(props) {
         .ref('/chatlist/' + data?.id + '/' + User?.id)
         .update(chatListupdate)
         .then(() => console.log('Data updated.'));
-      console.log("'/chatlist/' + User?.id + '/' + data?.id", data);
+      // console.log("'/chatlist/' + User?.id + '/' + data?.id", data);
       database()
         .ref('/chatlist/' + User?.id + '/' + data?.id)
         .update(chatListupdate)

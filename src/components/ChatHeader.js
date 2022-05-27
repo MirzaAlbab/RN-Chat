@@ -6,6 +6,7 @@ import {FONTS} from '../helper/font';
 import {Avatar} from '@rneui/themed';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {navigate} from '../helper/navigate';
+import SimpleToast from 'react-native-simple-toast';
 // create a component
 const ChatHeader = props => {
   const {data} = props;
@@ -39,7 +40,7 @@ const ChatHeader = props => {
             fontFamily: FONTS.SemiBold,
             textTransform: 'capitalize',
           }}>
-          {data.username ?? data.name}
+          {data.username}
         </Text>
 
         {/* <Text
@@ -56,21 +57,21 @@ const ChatHeader = props => {
         name="videocam"
         size={24}
         color={COLORS.white}
-        onPress={() => ''}
+        onPress={() => SimpleToast.show('Coming Soon')}
       />
       <Ionicons
         style={{marginRight: 10}}
         name="md-call-sharp"
         size={22}
         color={COLORS.white}
-        onPress={() => ''}
+        onPress={() => SimpleToast.show('Coming Soon')}
       />
       <Ionicons
         style={{marginRight: 15}}
         name="information-circle-outline"
         size={24}
         color={COLORS.white}
-        onPress={() => ''}
+        onPress={() => SimpleToast.show('Coming Soon')}
       />
     </View>
   );

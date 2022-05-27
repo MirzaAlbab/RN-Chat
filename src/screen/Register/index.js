@@ -38,21 +38,25 @@ const Register = ({navigation}) => {
       Alert.alert('Please fill in all fields');
       return false;
     }
-    let data = {
-      id: uuid.v4(),
-      username: username,
-      email: email,
-      password: password,
-      img: 'https://bootdey.com/img/Content/avatar/avatar1.png',
-    };
+    try {
+      let data = {
+        id: uuid.v4(),
+        username: username,
+        email: email,
+        password: password,
+        img: 'https://bootdey.com/img/Content/avatar/avatar1.png',
+      };
 
-    database()
-      .ref('/users/' + data.id)
-      .set(data)
-      .then(() => {
-        SimpleToast.show('Register successfully');
-        navigation.navigate('Login');
-      });
+      database()
+        .ref('/users/' + data.id)
+        .set(data)
+        .then(() => {
+          SimpleToast.show('Register successfully');
+          navigation.navigate('Login');
+        });
+    } catch (error) {
+      console.log(error);
+    }
 
     // auth()
     //   .createUserWithEmailAndPassword(email, password)

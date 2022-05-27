@@ -38,15 +38,10 @@ export default function Dashboard({navigation}) {
     <ListItem
       containerStyle={{paddingVertical: 8, marginVertical: 0}}
       onPress={() => navigation.navigate('Chat', {data: item})}>
-      <Avatar
-        source={{uri: item.img}}
-        rounded
-        // title={item.name.charAt(0)}
-        size="medium"
-      />
+      <Avatar source={{uri: item.img}} rounded size="medium" />
       <ListItem.Content>
         <ListItem.Title style={{fontFamily: FONTS.Medium, fontSize: 14}}>
-          {item.username ?? item.name}
+          {item.username}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{fontFamily: FONTS.Regular, fontSize: 12}}

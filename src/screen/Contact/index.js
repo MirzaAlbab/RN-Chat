@@ -6,13 +6,12 @@ import {SearchBar} from '@rneui/themed';
 import {COLORS} from '../../helper/color';
 import {FONTS} from '../../helper/font';
 import database from '@react-native-firebase/database';
-
 import uuid from 'react-native-uuid';
 
 export default function Contact({navigation}) {
   const {User} = useSelector(state => state.login);
   const [search, setsearch] = useState('');
-  const [allUser, setallUser] = useState('');
+  const [allUser, setallUser] = useState([]);
   const [allUserBackup, setallUserBackup] = useState([]);
 
   useEffect(() => {
@@ -24,14 +23,14 @@ export default function Contact({navigation}) {
       .ref('users/')
       .once('value')
       .then(snapshot => {
-        console.log('All User', snapshot.val());
+        // console.log('All User', snapshot.val());
         setallUser(
           Object.values(snapshot.val()).filter(it => it.id != User.id),
         );
         setallUserBackup(
           Object.values(snapshot.val()).filter(it => it.id != User.id),
         );
-        console.log('All User set');
+        // console.log('All User set');
       });
   };
   const searchuser = val => {
@@ -45,14 +44,14 @@ export default function Contact({navigation}) {
       .ref('/chatlist/' + User.id + '/' + data.id)
       .once('value')
       .then(snapshot => {
-        console.log('User data: ', snapshot.val());
+        // console.log('User data: ', snapshot.val());
 
         if (snapshot.val() == null) {
           let roomId = uuid.v4();
           let myData = {
             roomId,
             id: User.id,
-            name: User.username,
+            username: User.username,
             img: User.img,
             email: User.email,
             lastMsg: '',
@@ -84,7 +83,7 @@ export default function Contact({navigation}) {
       <Avatar
         source={{uri: item.img}}
         rounded
-        title={item.name}
+        title={item.username}
         size="medium"
       />
       <ListItem.Content>

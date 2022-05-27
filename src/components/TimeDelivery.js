@@ -1,11 +1,9 @@
-//import liraries
-import React, {Component} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS} from '../helper/color';
 import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// create a component
 const TimeDelivery = props => {
   const {sender, item} = props;
   return (
@@ -23,7 +21,6 @@ const TimeDelivery = props => {
           fontSize: 7,
           color: sender ? COLORS.white : COLORS.black,
         }}>
-        {item.time}
         {moment(item.send_time).format('LLL')}
       </Text>
 
@@ -39,7 +36,6 @@ const TimeDelivery = props => {
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   mainView: {
     flexDirection: 'row',
@@ -48,5 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//make this component available to the app
 export default TimeDelivery;
